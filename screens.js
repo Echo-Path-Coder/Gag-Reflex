@@ -384,7 +384,7 @@ function resultsScreen() {
     if (playButton2 && playButton2.isPressed) {
       generateTwoChoices();
       
-      correctCount = 0;
+      correctCount = 7;
       currentScreen = "quiz";
       setupQuestions();
 
