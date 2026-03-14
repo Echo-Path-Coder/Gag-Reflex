@@ -484,6 +484,7 @@ function runQuiz() {
   pop();
   push();
 
+
  for (let i = 0; i < currentChoices.length; i++){
     let x = width / 2 - 250;
     let y = 350 + i * 80;
@@ -516,6 +517,7 @@ function runQuiz() {
     }
     text(currentChoices[i], width / 2 + 20, y + h / 2);
   }
+
   pop();
 
   drawUI();
@@ -556,28 +558,41 @@ function drawUI() {
   text("Courses Cleared: " + correctCount + "/10", width - 40, 50);
 }
 
-function generateTwoChoices() {
+function generateChoices() {
+let q = questions[currentQuestion];
 
-  let q = questions[currentQuestion];
-
-  // get correct answer
+  // correct answer
   let correct = q.options[q.correct];
 
-  // get all wrong answers
+  // all wrong answers
   let wrongOptions = q.options.filter((opt, i) => i !== q.correct);
 
-  // pick one random wrong answer
-  let randomWrong = random(wrongOptions);
+  shuffle(wrongOptions, true);
 
-  // randomly decide position
-  if (random() < 0.5) {
-    currentChoices = [correct, randomWrong];
-    correctIndex = 0;
-  } else {
-    currentChoices = [randomWrong, correct];
-    correctIndex = 1;
+  // If player has fewer than 7 correct → show 2 options
+  if (correctCount < 7) {
+
+    let randomWrong = wrongOptions[0];
+
+    if (random() < 0.5) {
+      currentChoices = [correct, randomWrong];
+      correctIndex = 0;
+    } else {
+      currentChoices = [randomWrong, correct];
+      correctIndex = 1;
+    }
+
+  } 
+  
+  // If 7 or more correct → show 3 options
+  else {
+
+    currentChoices = [correct, wrongOptions[0], wrongOptions[1]];
+
+    shuffle(currentChoices, true);
+
+    correctIndex = currentChoices.indexOf(correct);
   }
-
 }
 
 function checkAnswer(choice) {
@@ -588,7 +603,7 @@ function checkAnswer(choice) {
     timer = maxTime; // reset timer
     correctSound.play();
     currentQuestion = (currentQuestion + 1) % questions.length;
-    generateTwoChoices();
+    generateChoices();
 
     if (correctCount >= 10) {
       triggerVictory();
@@ -630,7 +645,7 @@ function showCorrectAnswerMessage(){
   if(millis() - answerTimer > 5000){
     showAnswerMessage = false;
     currentQuestion++;
-    generateTwoChoices();
+    generateChoices();
     timer = maxTime
     questionColor = 'lime'
   }
