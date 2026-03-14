@@ -1,28 +1,53 @@
-/* Responsive full window and centered canvas */
-body,
-html {
+/* Full screen layout */
+html, body {
   margin: 0;
   padding: 0;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
-  background: #000000;
+
+  background: radial-gradient(circle at center, #111 0%, #000 80%);
+  font-family: "Courier New", monospace;
 }
 
+/* Game container */
+#game-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 20px;
+  border-radius: 12px;
+
+  background: rgba(20,20,20,0.8);
+  border: 2px solid #444;
+
+  box-shadow:
+    0 0 20px rgba(255,255,255,0.1),
+    0 0 60px rgba(0,0,0,0.8);
+}
+
+/* Canvas scaling */
 canvas {
   display: block;
   max-width: 100%;
-  height: auto; /* maintain aspect ratio */
-  background: transparent; /* makes canvas itself transparent */
+  height: auto;
+
+  border-radius: 10px;
+  box-shadow:
+    0 0 15px rgba(255,255,255,0.2);
 }
 
+/* Overlay UI */
 #webix-ui {
-  display: none; /* default hidden */
+  display: none;
   position: absolute;
+
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+
   z-index: 9999;
-  touch-action: auto; /* allow touch behaviors on inputs */
+  touch-action: auto;
 }
